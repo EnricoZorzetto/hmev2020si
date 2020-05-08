@@ -1,0 +1,75 @@
+# to install devtools and xml2 on the cluster, use the following:
+
+install.packages("xml2", configure.vars='INCLUDE_DIR=/usr/include/libxml2 LIB_DIR=/usr/lib64/')
+
+install.packages("devtools")
+use usethis::use_fun() instead of devtools::use_fun()
+
+usethis::use_package('rstan')
+
+# after modifying the hbevr package, rebuild and reinstall
+
+################################################################################
+# HOW TO INSTALL THE HBEVR PACKAGE IN A LINUX CLUSTER::
+################################################################################
+0) sendc, sendhbevr # sync files, where (from my .bashrc):
+
+    cluster="ez23@dcc-slogin.oit.duke.edu" # may vary
+    
+    alias sendc="rsync -av --exclude='*.rds' /home/enrico/Projects/hbev/codes/ 
+    '${cluster}:~/../../group/abmurraylab/ez23/hbev/codes/'"
+    
+    alias sendhbevr="rsync -av --exclude src/ /home/enrico/Projects/hbevr/ 
+    '${cluster}:~/../../group/abmurraylab/ez23/hbev/hbevr/'"
+
+1) ssh $cluster    
+2) cdhbev # (cd to project folder)
+4) cd hbevr (I have hbevr in hbev folder)
+5) module load GCC # necessary for R and rstan
+6) R:
+    > library(devtools)
+    > devtools::document() # NOT NECESSARY
+    > devtools::build(vignettes=FALSE)
+    > install.packages('../hmevr', repos = NULL, type="source")
+    
+    (Once I make the respo public, one should also be able to use install_github("EnricoZorzetto/hmevr"))
+    
+7) It should work: I can run one of the following commands
+
+bash kfold.sh, bash stats.sh, bash synth.sh, bash test.sh
+
+8) To pull results to my local machine: pullout, pulloutsim, where (from .bashrc)
+
+alias pullout='rsync -av "${cluster}:~/../../group/abmurraylab/
+         ez23/hbev/output/output_data/" ~/Projects/hbev/output/output_data/'
+alias pulloutsim='rsync -av "${cluster}:~/../../group/abmurraylab/
+         ez23/hbev/output/output_data/output_synth/" 
+          ~/Projects/hbev/output/output_data/output_synth/'
+
+Note: When pushing hbevr, do not push the src folder from local machine
+If Stan code was modified, remove the remote src folder before rebuilding
+################################################################################
+
+################################################################################
+
+To repeat the analysis for synthetic data in a linux cluster (sbatch), run:
+
+synth.sh 
+
+This will call the jobs synth0.q and synth.q, respectively launching a script to
+determine how many jobs are needed, and launching all the jobs
+
+To repeat the analysis using station data:
+
+1) Run read_ushcn_daily.R to download and clean the data
+2) launch stats.sh
+
+This will call the jobs kfold0.q and kfold.q, respectively launching a script to
+determine how many jobs are needed, and launching all the jobs
+
+
+
+
+
+
+                                          
