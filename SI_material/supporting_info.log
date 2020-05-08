@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2020.4.15)  8 MAY 2020 00:13
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2020.4.15)  8 MAY 2020 00:33
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -952,7 +952,7 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2]
 
-LaTeX Warning: Reference `fig:effnumpar' on page 3 undefined on input line 396.
+LaTeX Warning: Reference `fig:effnumpar' on page 3 undefined on input line 397.
 
 
 [3] [4]
@@ -964,15 +964,15 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.402 ...utplot/eff_num_par_waic2_kfold_479_0_dec}
+l.403 ...utplot/eff_num_par_waic2_kfold_479_0_dec}
                                                    \caption{Effective number...
  
 Here is how much of TeX's memory you used:
- 12337 strings out of 494880
- 178067 string characters out of 6179601
+ 12341 strings out of 494880
+ 178113 string characters out of 6179601
  282682 words of memory out of 5000000
  15408 multiletter control sequences out of 15000+600000
- 58152 words of font info for 78 fonts, out of 8000000 for 9000
+ 58365 words of font info for 80 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
  32i,11n,38p,255b,344s stack positions out of 5000i,500n,10000p,200000b,80000s
 !  ==> Fatal error occurred, no output PDF file produced!

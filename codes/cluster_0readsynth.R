@@ -7,9 +7,11 @@ library(extraDistr)
 library(data.table)
 library(rstan)
 library(nleqslv)
-library(hbevr)
+library(hmevr)
 
 print("Running cluster_0readsynth code")
+outdata1 =  file.path('..','output')
+dir.create(outdata1, showWarnings = FALSE)
 outdata =  file.path('..','output', 'output_data')
 dir.create(outdata, showWarnings = FALSE)
 

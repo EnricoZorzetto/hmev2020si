@@ -7,7 +7,7 @@ library(extraDistr)
 library(data.table)
 library(rstan)
 library(nleqslv)
-library(hbevr)
+library(hmevr)
 rstan_options(auto_write = TRUE)
 
 
@@ -132,6 +132,17 @@ rdf = expand.grid(test = tests, gof = gofs, numj = numj, ssize = myssize,
                   Nt = Nt,
                   ndist = ndist_true,
                   dist = myspec)
+            
+      dataval = load_synth_data(M_val,
+                  ptrue = ptrue,
+                  ntrue = ntrue,
+                  Nt = Nt,
+                  ndist = ndist_true,
+                  dist = myspec)
+      
+          #added ez:
+          n_err_max = 1
+          while (n_err_max > 0){
                 
       fit = fit_ev_model(datacal$data, model=mymodel,
                   iter=iter, chains=chains, Mgen = Mgen, 
@@ -148,13 +159,7 @@ rdf = expand.grid(test = tests, gof = gofs, numj = numj, ssize = myssize,
                   p_waic2 = quants_ss$p_waic2, 
                   elpd_loo = quants_ss$elpd_loo, 
                   p_loo = quants_ss$p_loo)
-      
-      dataval = load_synth_data(M_val,
-                  ptrue = ptrue,
-                  ntrue = ntrue,
-                  Nt = Nt,
-                  ndist = ndist_true,
-                  dist = myspec)
+
 
       quants_cv = comp_quant(fit, dataval$max, trmin=trmin) # cross validation
       
@@ -167,6 +172,17 @@ rdf = expand.grid(test = tests, gof = gofs, numj = numj, ssize = myssize,
                   p_waic2 = quants_cv$p_waic2, 
                   elpd_loo = quants_cv$elpd_loo, 
                   p_loo = quants_cv$p_loo)
+          
+      # added ez:
+          # check diagnostic quantities:
+          # n_warn_x0 = quants_ss$nwarning_x0
+          n_diverg = get_num_divergent(fit$model_fit)
+          n_max_tree = get_num_max_treedepth(fit$model_fit)
+          n_low_bfmi = length(get_low_bfmi_chains(fit$model_fit))
+          # check no divergences occurred and repeat if necessary
+          n_err_max = max(n_diverg, n_max_tree, n_low_bfmi)
+      } # end of while - section of code to repeat if divergence occur
+      # write down results now: 
       
 for (iig in 1:ngofs){
     rdf$value[rdf$gof == names(mygofs_ss)[iig] 

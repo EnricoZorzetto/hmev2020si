@@ -48,10 +48,11 @@ Mcal2 = 50
 
 
 PDIST = c("wei", "wei_dgu", "gpd", "gam")
-PTRUE = list(wei = list(C = 8, w = 0.6), 
-             wei_dgu = list(mc = 7, sc = 1, mw = 1, sw = 0.1), 
+PTRUE = list(wei = list(C = 8, w = 0.6),
+             wei_dgu = list(mc = 6, sc = 1, mw = 1, sw = 0.1),
              gpd = list(xi = 0.1, sigma = 8),
              gam = list(a = 1.2, b = 0.12))
+
 
 NSPECS = length(PDIST)
 
@@ -69,10 +70,10 @@ for (isp in 1:NSPECS){
 # myptrue = list(mc = mctrue, sc = sctrue, mw = mwtrue, sw = swtrue)
 # myptrue = list(C = ctrue, w = wtrue)
 
-pntrue = 0.3
-myntrue = list(pn = pntrue)
+# pntrue = 0.3
+# myntrue = list(pn = pntrue)
 
-ndistr = 'bin'
+# ndistr = 'bin'
 # pdistr = 'wei_dgu'
 # pdistr = 'wei'
 # pdistr = 'gpd'
@@ -80,6 +81,11 @@ ndistr = 'bin'
 
 # pdistr = 'gpd'
 # pdistr = 'gam'
+myntrue = list(mn = 100, varn = 150)
+# ntrue = list(an = 100, bn = 150)
+# ntrue = list(pn = 0.4)
+# ndist_true = 'bin'
+ndistr = 'bbn'
 ################################################################################
 
 # print("Hello World!")

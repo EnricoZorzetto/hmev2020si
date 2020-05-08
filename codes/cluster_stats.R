@@ -11,7 +11,7 @@ library(rstan)
 library(nleqslv)
 library(ggplot2)
 library(gridExtra)
-library(hbevr)
+library(hmevr)
 rstan_options(auto_write = TRUE)
 
 

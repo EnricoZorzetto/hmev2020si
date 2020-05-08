@@ -3,7 +3,7 @@
 rm(list=ls())  # remove existing workspace if any
 library(data.table)
 library(rstan)
-library(hbevr)
+library(hmevr)
 
 Nt = 366
 minlength = 100 # keep only stations longer than this value [number of years]
@@ -37,14 +37,18 @@ if(length(args)==0){
 print(sprintf('kfold_cv = %s', kfold_cv))
 print(sprintf('dataset = %s', dataset))
 
-if (use_cluster){
-  # setwd( file.path('~','hbev','codes'))
-} else {
-  setwd( file.path('~','Projects','hbev','codes'))
-}
+# if (use_cluster){
+#   # setwd( file.path('~','hbev','codes'))
+# } else {
+#   # setwd( file.path('~','Projects','hbev','codes'))
+# }
 # source("hbev_module.R")    # main functions for data analysis
 # source("hbev_functions.R") # other functions
-outdata = file.path('..', 'output', 'output_data')
+# outdata = file.path('..', 'output', 'output_data')
+outdata1 =  file.path('..','output')
+dir.create(outdata1, showWarnings = FALSE)
+outdata =  file.path('..','output', 'output_data')
+dir.create(outdata, showWarnings = FALSE)
 
 # get the directory with the correct dataset:
 if (dataset == 'M'){
