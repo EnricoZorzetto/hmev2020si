@@ -13,6 +13,9 @@ min_nevents = 0
 maxmiss = 30 # max number of missing obs / year
 nshuffles_kfold = 10
 
+# download and clean data if not done already::
+source("read_ushcn_daily.R")
+download_and_extract_data()
 
 ######################### SET ANALYSIS PARAM ###################################
 ################################################################################

@@ -420,7 +420,8 @@ qutrue = qhbev(trtrue, ntrue = myntrue, ptrue = myptrue, nsamples = 500,
     
     
       # coord_trans(x="log10", y='log10') +
-      annotate("text", x=2.5, y=180, label="b)", size = 8) +
+      # annotate("text", x=2.5, y=max(gevq2$qupper), label="b)", size = 8) +
+      # annotate("text", x=2.5, y=180, label="b)", size = 8) +
       coord_trans(x="log10") +
       labs(y = "Quantile [mm/day]", x= "Return Time [years]") +
       theme_bw() +

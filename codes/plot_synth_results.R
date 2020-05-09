@@ -5,10 +5,12 @@ library(plyr)
 # library(latex2exp)
 
 # first pull output sync from the cluster
-setwd( file.path('~','Projects','hbev','codes'))
+# setwd( file.path('~','Projects','hbev','codes'))
+# setwd( file.path('~','Projects','hbev','codes'))
 outdata = file.path('..', 'output', 'output_data', 'output_synth')
 
 outplot = file.path('..', 'output', 'outplot')
+dir.create(outplot, showWarnings = FALSE)
 files = list.files(outdata)
 nfiles = length(files)
 

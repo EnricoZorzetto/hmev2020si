@@ -345,6 +345,8 @@ gevq2 = comp_quant(gevfit2, vdata$maxima, trmin = trmin)
   
 # clrs <- color_scheme_get("brightblue")
     
+    maxival1 = max(gevq1$qupper)
+    maxival2 = max(gevq2$qupper)
     linesize = 0.7
     shadealpha = 0.4
     # colmodels <- c("GEV"="red","PPP"="green","HBEV"="blue")
@@ -394,7 +396,8 @@ gevq2 = comp_quant(gevfit2, vdata$maxima, trmin = trmin)
       # geom_line(aes( tri_true, xxi),  linetype="solid",   color = 'black') +
     
     
-      annotate("text", x=2.5, y=180, label="a)", size = 8) +
+      # annotate("text", x=2.5, y=180, label="a)", size = 8) +
+      annotate("text", x=2.5, y=maxival1, label="a)", size = 8) +
       # coord_trans(x="log10", y='log10') +
       coord_trans(x="log10") +
       labs(y = "Quantile [mm/day]", x= "Return Time [years]") +
@@ -450,7 +453,8 @@ gevq2 = comp_quant(gevfit2, vdata$maxima, trmin = trmin)
     
     
       # coord_trans(x="log10", y='log10') +
-      annotate("text", x=2.5, y=180, label="b)", size = 8) +
+      # annotate("text", x=2.5, y=180, label="b)", size = 8) +
+      annotate("text", x=2.5, y=maxival2, label="b)", size = 8) +
       coord_trans(x="log10") +
       labs(y = "Quantile [mm/day]", x= "Return Time [years]") +
       theme_bw() +

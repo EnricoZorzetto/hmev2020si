@@ -1,17 +1,39 @@
 
 # read all the stations in the USHCN - daily dataset and save them in csv 
 # with daily precipitation, after fixing flags
+library(hmevr)
 
-rm(list=ls()) 
-setwd( file.path('~','Projects','hbev','codes'))
-source("hbev_module.R")    # main functions for data analysis
-source("hbev_functions.R") # other functions
+# rm(list=ls()) 
+# setwd( file.path('~','Projects','hbev','codes'))
+# source("hbev_module.R")    # main functions for data analysis
+# source("hbev_functions.R") # other functions
+
+download_and_extract_data <- function(){
+
+datadir1 = file.path('..', 'data')
+dir.create(datadir1, showWarnings = FALSE)
 datadir = file.path('..', 'data', 'Data_GHCN_Daily')
+dir.create(datadir, showWarnings = FALSE)
 
-downl = FALSE
+# download files only if not already present
+if (file.exists( file.path(datadir, 'ghcnd_hcn.tar.gz'))){
+  downl = FALSE
+  print('No need to download data - already there')
+} else {
+  downl = TRUE
+}
+  
+# extract files only if not already done
+if (dir.exists( file.path(datadir, 'extracted_csv'))){
+  extr = FALSE
+  print('No need to process data - already done')
+} else {
+  extr = TRUE
+}
 
 if (downl){
-  dir.create(datadir, showWarnings = FALSE)
+  print('Downloading and extracting data from NOAA USHCN')
+  # dir.create(datadir, showWarnings = FALSE)
 
   # list of files to download
   files2d = c('ghcnd-stations.txt',
@@ -49,6 +71,9 @@ if (downl){
 # WMO ID       81-85   Character
 # ------------------------------ 
 
+if (extr){
+
+print('Extracting data from NOAA USHCN')
 ghcnd_stats <- file.path(datadir, 'ghcnd-stations.txt')
 
 
@@ -97,7 +122,8 @@ dfs_hcn['MAXOBS'] = 0
 
 # read stations and save csv with daily precipitation data
   dlydir = file.path(datadir, 'ghcnd_hcn')
-  files = list.files(dlydir)
+  # files = list.files(dlydir)
+  files = list.files(dlydir, pattern = "\\.dly$")
   nfiles = length(files)
   print(sprintf("There are %s files", nfiles))
   
@@ -217,5 +243,8 @@ dfs_hcn['MAXOBS'] = 0
   outnamest = 'list_ushcn_stats.csv'
   write.table(dfs_hcn, file = file.path(datadir, outnamest), sep = ',', col.names=NA)
   
+}
   
-   
+}
+  
+download_and_extract_data()

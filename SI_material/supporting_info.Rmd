@@ -19,7 +19,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 
-Here we breafly review the main extreme value statistical models consistently with the notation used in the main manuscript. The two approaches detailed below are the Generalized Extreme Value distribution used as a model for block maxima series, and the Peak Over Threshold (POT) defined as a Poisson point process. For a complete discussion, see Coles [-@coles2001introduction] or De Haan and Ferreira [-@de2007extreme]. These models are commonly used for EV analysis and statistical software that implement these technique is available, such as for example the \emph{extRemes} R package [@gilleland2016extremes]. The Bayesian estimation for the GEV and POT models used in our study is described below and implemented in the HMEV R package.
+Here we breafly review the main extreme value statistical models consistently with the notation used in the main manuscript. The two approaches detailed below are the Generalized Extreme Value distribution used as a model for block maxima series, and the Peak Over Threshold (POT) defined as a Poisson point process. For a complete discussion, see Coles [-@coles2001introduction] or De Haan and Ferreira [-@de2007extreme]. These models are commonly used for EV analysis and statistical software that implement these technique is available, such as for example the \emph{extRemes} R package [@gilleland2016extremes]. The Bayesian (Hamiltonian Monte Carlo) estimation for the GEV and POT models used in our study is described below and implemented in the HMEV R package.
  
 ##  The Generalized Extreme Value distribution
 
@@ -95,25 +95,22 @@ model as follows:
 
 
 
-Evaluating the predictive accuracy of extreme value models in estimating the right tail of the  distribution is indeed an inherently challenging task, as high quantiles are, by definition, poorly represented in the  available samples. For this reason, cross validation techniques are rarely used to assess the performance of fitted extreme value models. In our analysis, however, we harnessed the considerable length of the synthetic data sets available here in order to extensively test the performance of different methods using both in-sample and out-of-sample validation techniques. To this end, we employ both in-sample and out-of-sample measures.
-
-The log pointwise predictive density (lppd) [@gelman2013bayesian] computed both for the in-sample data and for the out-of-sample data is often used as a measure of global performance of the models. 
-
-This can be directly estimated from $S$ draws from a MCMC sameple as
+Evaluating the predictive accuracy of extreme value models in estimating the right tail of the  distribution is indeed an inherently challenging task, as high quantiles are, by definition, poorly represented in the  available samples. For this reason, cross validation techniques are rarely used to assess the performance of fitted extreme value models. In our analysis, however, we harnessed the considerable length of the synthetic data sets available here in order to extensively test the performance of different methods using both in-sample and out-of-sample validation techniques. To this end, we employ both in-sample and out-of-sample measures. The log pointwise predictive density (lppd) [@gelman2013bayesian] computed both for the in-sample data and for the out-of-sample data is used as a measure of global performance of the models. This measure can be directly estimated from $S$ draws from a MCMC sameple as
 
 \begin{equation}
-	    \widehat{lppd} = \sum_{i = 1}^{n} \log \left( \frac{1}{S}\sum_{s = 1}^{S} p(y_i \lvert
+	    \widehat{lppd} = -\frac{1}{M}\sum_{i = 1}^{M} \log \left( \frac{1}{S}\sum_{s = 1}^{S} p(y_i \lvert
     {\theta}^{(s)})\right)
 \end{equation}
-This quantity, if computed for in-sample data $y_i$, is expected to overestimate the expected log predictive density (elpd) for the same data points. This overestimation is generally corrected by quantifying the overfit of the model using some estimate of the effective number of parameter of the model. Common corrections used in practice include the Deviance Information Crtiterion (DIC), Watanaibe-Aikake information criterion (WAIC) [@gelman2013bayesian], or leave one out techniques such as the log posterior marginal likelihood (LPML) [@gelfand1994bayesian], or leave-one-out based on Pareto Smoothed Importance Sampling (PSIS) , [@vehtari2017practical]. 
 
-Here we used the logarithm of the pseudo-marginal likelihood (lpml), a convenient index that directly accounts, at no additional computational cost, for a leave-one-out cross validation measure [@gelfand1994bayesian]. Notably, since the lpml approximates the expected log pointwise predictive density, the difference between the in-sample lppd and the lpml represents the number of effective parameters of a model [@vehtari2017practical] and thus will be used to quantify overfitting. 
- 
+This quantity, if computed for in-sample annual maxima data $y_i$, $i = 1, \dots, M$ is expected to overestimate the expected log predictive density (elpd) for the same data points. This overestimation is generally corrected by quantifying the overfit of the model using some estimate of the effective number of parameter of the model. Common corrections used in practice include the Deviance Information Crtiterion (DIC), Watanaibe-Aikake information criterion (WAIC) [@gelman2013bayesian], or leave one out techniques such as the log posterior marginal likelihood (LPML) [@gelfand1994bayesian], or leave-one-out based on Pareto Smoothed Importance Sampling (PSIS) [@vehtari2017practical]. 
+
+Here we used the logarithm of the pseudo-marginal likelihood (lpml), a convenient index that directly accounts, at no additional computational cost, for a leave-one-out cross validation measure [@gelfand1994bayesian]. Notably, since the lpml approximates the expected log pointwise predictive density, the difference between the in-sample lppd and the lpml represents the number of effective parameters of a model [@vehtari2017practical] and thus will be used to quantify the tendency of different models to overfitting. 
+
 \begin{equation}
-    lpml_m = -\frac{1}{m}\sum_{i = 1}^{m} \log{\left( CPO_i \right)}
+    lpml = -\frac{1}{M}\sum_{i = 1}^{M} \log{\left( CPO_i \right)}
 \end{equation}
 
-where we add the factor $-1/m$ to reduce its variation with sample size.
+where we add the factor $-1/M$ to reduce its variation with sample size.
 Here $CPO_i$ is the \emph{Conditional Predictive Ordinate} statistics introduced by
 [@gelfand1992model] and [@gelfand1994bayesian], which estimates the
 probability of observing a value $y_i$ given that $\mathbf{y}_{-i}$ has been
@@ -135,14 +132,14 @@ The CPO can be computed as the geometric mean of the likelihood of the data
 
 Therefore $CPO_i$ can be computed as the harmonic mean of the likelihood of the
 annual maxima $y_i$ given the model. The best model amongst the ones tested
-here will be characterized by the largest value of $LPML$.
+here will be characterized by the largest value of $lpml$.
 Note that given the properties of this measure of predictive performance
-(in essence equivalent to a leave-one-out cross validation), we can use LPML
+(in essence equivalent to a leave-one-out cross validation), we can use $lpml$
 when a single sample is available for calibration and testing of the EV models.
-Therefore, LPML can be used to decide which of these models is best for a given
+Therefore, $lpml$ can be used to decide which of these models is best for a given
 sample/ application. We therefore propose to use it when only short samples are
 available to decide which EV model we shouls use for the distribution of annual
-maxima. We note that LPML can be difficult to use for the GEV distribution when applied to a validation sample different from the one used to fit the distribution, since it is possible that the modelled posterior distribution assign zero probability to some of the observed values.
+maxima. We note that $lpml$ can be difficult to use for the GEV distribution when applied to a validation sample different from the one used to fit the distribution, since it is possible that the modelled posterior distribution assign zero probability to some of the observed values.
 
 
 
@@ -150,25 +147,7 @@ maxima. We note that LPML can be difficult to use for the GEV distribution when 
 
 \section{Additional tables}
 
-\begin{table}[h]
-	\centering
-	\caption{Summary of 4 model specifications used to generate synthetic datasets in the simulation study.}
-	\begin{tabular}{ll}
 
-		\hline
-		Model for $x_{ij}$  & parameters \\ \hline
-
-		GP  & $\xi = 0.1, \quad \sigma = 8$ \\
-		GAM  & $\alpha = 1.2, \quad \beta = 0.12$ \\
-		WEI  & $\gamma = 0.6, \quad \delta = 8 $ \\
-		WEI$_G$  & $\mu_{\delta} = 7, \quad \sigma_{\delta} = 1, \quad \mu_{\gamma} = 1, \quad \sigma_{\gamma} = 0.1,$ \\
-		\hline
-		Model for $n_{j}$  & parameters \\ \hline
-		BBN & $ \mu_n = 100, \quad \sigma^2_n = 150 $  \\ \hline
-
-		\label{tab:simulations}
-	\end{tabular}
-\end{table}
 
 \begin{table}
 	\centering
@@ -216,6 +195,25 @@ maxima. We note that LPML can be difficult to use for the GEV distribution when 
 	\end{tabular}
 \end{table}
 
+\begin{table}[h]
+	\centering
+	\caption{Summary of 4 model specifications used to generate synthetic datasets in the simulation study.}
+	\begin{tabular}{ll}
+
+		\hline
+		Model for $x_{ij}$  & parameters \\ \hline
+
+		GP  & $\xi = 0.1, \quad \sigma = 8$ \\
+		GAM  & $\alpha = 1.2, \quad \beta = 0.12$ \\
+		WEI  & $\gamma = 0.6, \quad \delta = 8 $ \\
+		WEI$_G$  & $\mu_{\delta} = 7, \quad \sigma_{\delta} = 1, \quad \mu_{\gamma} = 1, \quad \sigma_{\gamma} = 0.1,$ \\
+		\hline
+		Model for $n_{j}$  & parameters \\ \hline
+		BBN & $ \mu_n = 100, \quad \sigma^2_n = 150 $  \\ \hline
+
+		\label{tab:simulations}
+	\end{tabular}
+\end{table}
 
 %
 \begin{table}
@@ -255,7 +253,7 @@ maxima. We note that LPML can be difficult to use for the GEV distribution when 
 As we can see in Figure \ref{fig:effnumpar} we report the effective number of paramaters computed for observed data. Additionally, we include the same quantity computed in a different way (Watanabe-Aikake information criterion) to show that results do not change too much.
 
 ```{r effnumpar, echo=FALSE, fig.lp = "fig:", fig.cap="Effective number of parameters for the stations in the USHCN dataset.\\label{fig:effnumpar}", out.width = '100%'}
-knitr::include_graphics("../output/outplot/eff_num_par_waic2_kfold_479_0_dec.png")
+knitr::include_graphics("figures/eff_num_par_waic2_kfold_479_0_dec.png")
 ```
 
 
@@ -268,27 +266,27 @@ evaluated using the LPPD
 Here we provide a spatially-explicit representation of model performances, by mapping, in Figures \ref{fig:maps_lppd} and \ref{fig:maps_fse}, the best model for each station as evaluated through the lppd pr FSE measures respectively. This representation of the results of our analysis shows again the interesting difference observed for the in-sample analysis, which tend to favor the POT method, and the out-of-sample results where HMEV appears to be selected most often as preferred model. The frequency of HMEV being the model of choice is higher for smaller sample sizes. 
 
 ```{r maps1, echo=FALSE,  fig.lp = "fig:", fig.cap="Best model for each station, as evaluated through the LPPD measure (in-sample and out-of-sample).\\label{fig:maps_lppd}", out.width = '100%'}
-knitr::include_graphics("../output/outplot/lppd_maps_kfold_479_0_dec.png")
+knitr::include_graphics("figures/lppd_maps_kfold_479_0_dec.png")
 ```
 
 And in Figure \ref{fig:maps_fse} we report the same result for the FSE
 
 ```{r maps2, echo=FALSE,  fig.lp = "fig:", fig.cap="Best model for each station, as evaluated through the FSE measure (in-sample and out-of-sample).\\label{fig:maps_fse}", out.width = '100%'}
-knitr::include_graphics("../output/outplot/fse_maps_kfold_479_0_dec.png")
+knitr::include_graphics("figures/fse_maps_kfold_479_0_dec.png")
 ```
 
 in Figures \ref{fig:wei_spec}, \ref{fig:gam_spec}, and \ref{fig:gpd_spec} we report examples using the Weibull, Gamma, and Generalized Pareto specifications respectively.
 
 ```{r wei, echo=FALSE,  fig.lp = "fig:", fig.cap="Example of fit to samples of 20 and 50 yearly blocks of data generated according to the Weibull specification.\\label{fig:wei_spec}", out.width = '100%'}
-knitr::include_graphics("../output/outplot/synth_examples_ss_20_50_4spec_wei.png")
+knitr::include_graphics("figures/synth_examples_ss_20_50_4spec_wei.png")
 ```
 
 ```{r gam, echo=FALSE,  fig.lp = "fig:", fig.cap="Example of fit to samples of 20 and 50 yearly blocks of data generated according to the Generalized Pareto specification.\\label{fig:gpd_spec}", out.width = '100%'}
-knitr::include_graphics("../output/outplot/synth_examples_ss_20_50_4spec_gpd.png")
+knitr::include_graphics("figures/synth_examples_ss_20_50_4spec_gpd.png")
 ```
 
 ```{r gpd, echo=FALSE,  fig.lp = "fig:", fig.cap="Example of fit to samples of 20 and 50 yearly blocks of data generated according to the Gamma specification.\\label{fig:gam_spec}", out.width = '100%'}
-knitr::include_graphics("../output/outplot/synth_examples_ss_20_50_4spec_gam.png")
+knitr::include_graphics("figures/synth_examples_ss_20_50_4spec_gam.png")
 ```
 
 <!-- ## Including R code -->
