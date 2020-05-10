@@ -113,11 +113,16 @@ for (i in 1:nssizes){
 
 # compute LPML - LPPD for IN SAMPLE data
 
+SS = c(10, 20, 50)
+nSS = length(SS)
+for (iss in 1:nSS){
+    mysss = SS[iss]
+    
 dfd <- reshape2::dcast(dfr0, test + numj + ssize + spec + model + test_numj ~ gof, value.var = 'value')
 dfd$enp <- (dfd$lpml - dfd$lppd)*dfd$ssize
 dfd <- subset(dfd, dfd$test == 'ss' &
               dfd$model %in% c("gev", "pot_ppp", "wei_dgu_bin") &
-              dfd$ss %in% c(50))
+              dfd$ss == mysss)
 dfd$spec <- factor(dfd$spec, levels = c("gam", "wei", "wei_dgu", "gpd"),
                   labels = c("GAM", "WEI", 'WEI[G]',  "GP"))
 dfd$model <- factor(dfd$model, levels = c("gev", "pot_ppp", "wei_dgu_bin"),
@@ -140,9 +145,9 @@ pdfd <- ggplot(dfd, aes(x = model, y = enp, fill = model)) +
                  )+ 
 
       scale_y_continuous(trans='log10')+
-         ggsave(file.path(outplot, 
-                                       sprintf('synth_eff_num_par.png')),
+      ggsave(file.path(outplot, sprintf('synth_eff_num_par_ss_%s.png', mysss)),
                                        width = 8, height = 4)
 pdfd
+}
 # 
   

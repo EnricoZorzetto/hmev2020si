@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2020.4.15)  9 MAY 2020 17:52
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2020.4.15)  9 MAY 2020 22:06
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -794,6 +794,21 @@ Package: multirow 2016/11/25 v2.2 Span multiple rows of a table
 
 LaTeX Warning: Label `fig:effnumpar' multiply defined.
 
+
+LaTeX Warning: Label `fig:effnumparwaic' multiply defined.
+
+
+LaTeX Warning: Label `fig:effnumparsynth10' multiply defined.
+
+
+LaTeX Warning: Label `fig:mfse20' multiply defined.
+
+
+LaTeX Warning: Label `fig:mbias20' multiply defined.
+
+
+LaTeX Warning: Label `fig:mwidth20' multiply defined.
+
 )
 \openout1 = `supporting_info.aux'.
 
@@ -915,115 +930,178 @@ G,.JBIG2,.JB2,.eps]
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-LaTeX Font Info:    Try loading font information for OT1+lmr on input line 117.
+LaTeX Font Info:    Try loading font information for OT1+lmr on input line 118.
 
 (/usr/share/texmf/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OML+lmm on input line 117.
+LaTeX Font Info:    Try loading font information for OML+lmm on input line 118.
 
 (/usr/share/texmf/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OMS+lmsy on input line 117
+LaTeX Font Info:    Try loading font information for OMS+lmsy on input line 118
 .
 (/usr/share/texmf/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OMX+lmex on input line 117
+LaTeX Font Info:    Try loading font information for OMX+lmex on input line 118
 .
 (/usr/share/texmf/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 117.
+(Font)              <10> on input line 118.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 117.
+(Font)              <7> on input line 118.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 117.
-LaTeX Font Info:    Try loading font information for U+msa on input line 117.
+(Font)              <5> on input line 118.
+LaTeX Font Info:    Try loading font information for U+msa on input line 118.
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 ) (/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 117.
+LaTeX Font Info:    Try loading font information for U+msb on input line 118.
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) (/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 ) [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2]
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
+Underfull \hbox (badness 1048) in paragraph at lines 184--187
+[]\T1/lmr/m/n/10 (+20) where the pa-ram-e-ters of the GEV are ob-tained as fol-
+lows: $\OML/lmm/m/it/10 ^^T \OT1/lmr/m/n/10 (+20) = \OML/lmm/m/it/10 ^^X$\T1/lm
+r/m/n/10 (+20) , $\OML/lmm/m/it/10 ^^L \OT1/lmr/m/n/10 (+20) = \OML/lmm/m/it/10
+ ^^[ \OT1/lmr/m/n/10 (+20) + \OML/lmm/m/it/10 ^^X []$\T1/lmr/m/n/10 (+20) , and
+
+ []
+
+[2]
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<figures/eff_num_par_waic2_kfold_479_0_dec.png, id=68, 578.16pt x 361.35pt>
+
+LaTeX Warning: Reference `fig:effnumparwaic10' on page 3 undefined on input lin
+e 395.
+
+
+LaTeX Warning: Reference `fig:effnumparwaic20' on page 3 undefined on input lin
+e 395.
+
+<figures/eff_num_par_kfold_479_0_dec.png, id=69, 578.16pt x 361.35pt>
+File: figures/eff_num_par_kfold_479_0_dec.png Graphic file (type png)
+<use figures/eff_num_par_kfold_479_0_dec.png>
+Package pdftex.def Info: figures/eff_num_par_kfold_479_0_dec.png  used on input
+ line 400.
+(pdftex.def)             Requested size: 469.75385pt x 293.59616pt.
+<figures/eff_num_par_waic2_kfold_479_0_dec.png, id=70, 578.16pt x 361.35pt>
 File: figures/eff_num_par_waic2_kfold_479_0_dec.png Graphic file (type png)
 <use figures/eff_num_par_waic2_kfold_479_0_dec.png>
 Package pdftex.def Info: figures/eff_num_par_waic2_kfold_479_0_dec.png  used on
- input line 405.
+ input line 404.
 (pdftex.def)             Requested size: 469.75385pt x 293.59616pt.
-[3] [4 <./figures/eff_num_par_waic2_kfold_479_0_dec.png (PNG copy)>]
-<figures/lppd_maps_kfold_479_0_dec.png, id=90, 433.62pt x 578.16pt>
+<figures/synth_eff_num_par_ss_10.png, id=71, 578.16pt x 289.08pt>
+File: figures/synth_eff_num_par_ss_10.png Graphic file (type png)
+<use figures/synth_eff_num_par_ss_10.png>
+Package pdftex.def Info: figures/synth_eff_num_par_ss_10.png  used on input lin
+e 408.
+(pdftex.def)             Requested size: 469.75385pt x 234.8769pt.
+<figures/synth_eff_num_par_ss_20.png, id=72, 578.16pt x 289.08pt>
+File: figures/synth_eff_num_par_ss_20.png Graphic file (type png)
+<use figures/synth_eff_num_par_ss_20.png>
+Package pdftex.def Info: figures/synth_eff_num_par_ss_20.png  used on input lin
+e 412.
+(pdftex.def)             Requested size: 469.75385pt x 234.8769pt.
+
+LaTeX Warning: Reference `fig:fse20' on page 3 undefined on input line 417.
+
+<figures/synth_fse_ssize_20.png, id=75, 578.16pt x 361.35pt>
+File: figures/synth_fse_ssize_20.png Graphic file (type png)
+<use figures/synth_fse_ssize_20.png>
+Package pdftex.def Info: figures/synth_fse_ssize_20.png  used on input line 422
+.
+(pdftex.def)             Requested size: 469.75385pt x 293.59616pt.
+<figures/synth_mbias_ssize_20.png, id=76, 578.16pt x 361.35pt>
+File: figures/synth_mbias_ssize_20.png Graphic file (type png)
+<use figures/synth_mbias_ssize_20.png>
+Package pdftex.def Info: figures/synth_mbias_ssize_20.png  used on input line 4
+25.
+(pdftex.def)             Requested size: 469.75385pt x 293.59616pt.
+<figures/synth_mwidth_ssize_20.png, id=77, 578.16pt x 361.35pt>
+File: figures/synth_mwidth_ssize_20.png Graphic file (type png)
+<use figures/synth_mwidth_ssize_20.png>
+Package pdftex.def Info: figures/synth_mwidth_ssize_20.png  used on input line 
+428.
+(pdftex.def)             Requested size: 469.75385pt x 293.59616pt.
+[3] [4 <./figures/eff_num_par_kfold_479_0_dec.png (PNG copy)>] [5 <./figures/ef
+f_num_par_waic2_kfold_479_0_dec.png (PNG copy)> <./figures/synth_eff_num_par_ss
+_10.png (PNG copy)>] [6 <./figures/synth_eff_num_par_ss_20.png (PNG copy)> <./f
+igures/synth_fse_ssize_20.png (PNG copy)>] [7 <./figures/synth_mbias_ssize_20.p
+ng (PNG copy)>] [8 <./figures/synth_mwidth_ssize_20.png (PNG copy)>]
+<figures/lppd_maps_kfold_479_0_dec.png, id=124, 433.62pt x 578.16pt>
 File: figures/lppd_maps_kfold_479_0_dec.png Graphic file (type png)
 <use figures/lppd_maps_kfold_479_0_dec.png>
 Package pdftex.def Info: figures/lppd_maps_kfold_479_0_dec.png  used on input l
-ine 426.
+ine 449.
 (pdftex.def)             Requested size: 433.63878pt x 578.18504pt.
-<figures/fse_maps_kfold_479_0_dec.png, id=92, 433.62pt x 578.16pt>
+<figures/fse_maps_kfold_479_0_dec.png, id=125, 433.62pt x 578.16pt>
 File: figures/fse_maps_kfold_479_0_dec.png Graphic file (type png)
 <use figures/fse_maps_kfold_479_0_dec.png>
 Package pdftex.def Info: figures/fse_maps_kfold_479_0_dec.png  used on input li
-ne 432.
+ne 453.
 (pdftex.def)             Requested size: 433.63878pt x 578.18504pt.
-<figures/synth_examples_ss_20_50_4spec_wei.png, id=96, 578.16pt x 303.534pt>
+<figures/synth_examples_ss_20_50_4spec_wei.png, id=129, 578.16pt x 303.534pt>
 File: figures/synth_examples_ss_20_50_4spec_wei.png Graphic file (type png)
 <use figures/synth_examples_ss_20_50_4spec_wei.png>
 Package pdftex.def Info: figures/synth_examples_ss_20_50_4spec_wei.png  used on
- input line 440.
+ input line 465.
 (pdftex.def)             Requested size: 469.75385pt x 246.62076pt.
-<figures/synth_examples_ss_20_50_4spec_gpd.png, id=97, 578.16pt x 303.534pt>
+<figures/synth_examples_ss_20_50_4spec_gpd.png, id=130, 578.16pt x 303.534pt>
 File: figures/synth_examples_ss_20_50_4spec_gpd.png Graphic file (type png)
 <use figures/synth_examples_ss_20_50_4spec_gpd.png>
 Package pdftex.def Info: figures/synth_examples_ss_20_50_4spec_gpd.png  used on
- input line 444.
+ input line 469.
 (pdftex.def)             Requested size: 469.75385pt x 246.62076pt.
-<figures/synth_examples_ss_20_50_4spec_gam.png, id=98, 578.16pt x 303.534pt>
+<figures/synth_examples_ss_20_50_4spec_gam.png, id=131, 578.16pt x 303.534pt>
 File: figures/synth_examples_ss_20_50_4spec_gam.png Graphic file (type png)
 <use figures/synth_examples_ss_20_50_4spec_gam.png>
 Package pdftex.def Info: figures/synth_examples_ss_20_50_4spec_gam.png  used on
- input line 448.
+ input line 473.
 (pdftex.def)             Requested size: 469.75385pt x 246.62076pt.
-[5] [6 <./figures/lppd_maps_kfold_479_0_dec.png (PNG copy)>] [7 <./figures/fse_
-maps_kfold_479_0_dec.png (PNG copy)>] [8 <./figures/synth_examples_ss_20_50_4sp
-ec_wei.png (PNG copy)> <./figures/synth_examples_ss_20_50_4spec_gpd.png (PNG co
-py)>]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 538.
-[9 <./figures/synth_examples_ss_20_50_4spec_gam.png (PNG copy)>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 538.
+[9] [10 <./figures/lppd_maps_kfold_479_0_dec.png (PNG copy)>] [11 <./figures/fs
+e_maps_kfold_479_0_dec.png (PNG copy)>] [12 <./figures/synth_examples_ss_20_50_
+4spec_wei.png (PNG copy)> <./figures/synth_examples_ss_20_50_4spec_gpd.png (PNG
+ copy)>]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 563.
+[13 <./figures/synth_examples_ss_20_50_4spec_gam.png (PNG copy)>]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 563.
 (./supporting_info.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 538.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 538.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 563.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 563.
 Package rerunfilecheck Info: File `supporting_info.out' has not changed.
-(rerunfilecheck)             Checksum: D82A2A5D37BD03DC67A9ACC3B13B2C7D;1866.
+(rerunfilecheck)             Checksum: B6BC315324C6C6116A4429941624F797;1983.
+
+LaTeX Warning: There were undefined references.
+
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 538.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 563.
  ) 
 Here is how much of TeX's memory you used:
- 12453 strings out of 494880
- 180487 string characters out of 6179601
- 286031 words of memory out of 5000000
- 15463 multiletter control sequences out of 15000+600000
- 56305 words of font info for 88 fonts, out of 8000000 for 9000
+ 12500 strings out of 494880
+ 181799 string characters out of 6179601
+ 291667 words of memory out of 5000000
+ 15500 multiletter control sequences out of 15000+600000
+ 59311 words of font info for 88 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
  32i,11n,38p,389b,344s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share/texmf/fonts/enc/dv
-ips/lm/lm-mathit.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/s
-hare/texmf/fonts/enc/dvips/lm/lm-mathex.enc}{/usr/share/texmf/fonts/enc/dvips/l
-m/lm-ec.enc}</usr/share/texmf/fonts/type1/public/lm/lmbx10.pfb></usr/share/texm
+{/usr/share/texmf/fonts/enc/dvips/lm/lm-ec.enc}{/usr/share/texmf/fonts/enc/dv
+ips/lm/lm-rm.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/share
+/texmf/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm
+-mathex.enc}</usr/share/texmf/fonts/type1/public/lm/lmbx10.pfb></usr/share/texm
 f/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx
 7.pfb></usr/share/texmf/fonts/type1/public/lm/lmex10.pfb></usr/share/texmf/font
 s/type1/public/lm/lmmi10.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi5.pfb>
@@ -1034,10 +1112,10 @@ m/lmr7.pfb></usr/share/texmf/fonts/type1/public/lm/lmri10.pfb></usr/share/texmf
 /fonts/type1/public/lm/lmri12.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy1
 0.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy7.pfb></usr/share/texlive/tex
 mf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on supporting_info.pdf (9 pages, 3555903 bytes).
+Output written on supporting_info.pdf (13 pages, 4257399 bytes).
 PDF statistics:
- 218 PDF objects out of 1000 (max. 8388607)
- 183 compressed objects within 2 object streams
- 58 named destinations out of 1000 (max. 500000)
- 10335 words of extra memory for PDF output out of 12000 (max. 10000000)
+ 254 PDF objects out of 1000 (max. 8388607)
+ 208 compressed objects within 3 object streams
+ 69 named destinations out of 1000 (max. 500000)
+ 10365 words of extra memory for PDF output out of 12000 (max. 10000000)
 
