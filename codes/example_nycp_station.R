@@ -43,7 +43,6 @@ min_nevents = 0
 Nt = 366
 decluster = TRUE
 Mgen = 50
-# decluster = FALSE
 ################################################################################
 
 datadir = file.path('..','data', 'Data_GHCN_Daily', 'extracted_csv')
