@@ -379,13 +379,13 @@ summary {
 <li><em>“hmev2020si/output”</em>: where output data and figures are stored</li>
 </ul></li>
 <li><p>Data can be downloaded and processed by running the script <em>“read_ushcn_daily.R”</em></p></li>
-<li>Note that part of the analysis involve a single observed or simulated dataset. These can be easily run from a personal computer, and include the following scripts:
+<li>Note that part of the analysis involves a single observed or simulated dataset. This can be easily run from a personal computer, and include the following scripts:
 <ul>
 <li><em>example_nycp_station.R:</em> Analyzes the New York time series</li>
 <li><em>example_synth_data.R:</em> Analyzes a sample simulated time series</li>
 <li><em>example_synth_data_4specs.R:</em> Analyzes 4 different simulated time series</li>
 </ul></li>
-<li><p>The analysis of the entire dataset and the full simulation study was performed on a computer cluster. The bash scripts used for the analysis are the following:</p>
+<li><p>The analysis of the entire dataset and the full simulation study were performed on a computer cluster. The bash scripts used for the analysis are the following:</p>
 <ul>
 <li><em>synth.sh</em> This script launches the simulation study</li>
 <li><em>kfold.sh</em> This script launches the full data analysis of the USHCN dataset, following the the in-sample vs out-of-sample validation analysis described in the paper</li>
@@ -405,13 +405,15 @@ $ <em>bash kfold.sh</em><br />
 </div>
 <div id="notes-on-installing-r-and-building-the-hmevr-package-from-source-in-a-linux-cluster" class="section level2">
 <h2>Notes on installing R and building the <em>hmevr</em> package from source in a linux cluster</h2>
-<p>The following steps may be system dependent. First, install <em>R</em> and the required packages. I did build <em>R</em> from source in my remote home directory. Before installing <em>R</em>, I run “$ <em>module load GCC/7.4.0</em>” as a c++ compiler is needed for compiling the Stan models. <em>R</em> must be built with the right GCC version, and In every session the <em>sbatch.q</em> files included in the analysis load this correct GCC version before launching <em>R</em> jobs.</p>
-<p>If you need to install <em>devtools</em> and <em>xml2</em> on the cluster, you can use the following commands from within R:<br />
-&gt; install.packages(“xml2”, configure.vars=‘INCLUDE_DIR=/usr/include/libxml2 LIB_DIR=/usr/lib64/’)<br />
-&gt; install.packages(“devtools”)<br />
-&gt; use usethis::use_fun() instead of devtools::use_fun()<br />
-&gt; usethis::use_package(‘rstan’) </p>
-<p>NOTE: do this before building <em>hmevr</em> as rstan is necessary to compile the Stan models implemented in <em>hmevr</em>. Also, the other dependencies of <em>hmevr</em> must be installed (see below for a complete list of dependencies).</p>
+<p>The following steps may be system dependent. First, install <em>R</em> and the required packages. I did build <em>R</em> from source in my remote home directory. Before installing <em>R</em>, I did run “$ <em>module load GCC/7.4.0</em>” as a c++ compiler is needed for compiling the Stan models. <em>R</em> must be built with the right GCC version, and In every session the <em>sbatch.q</em> files included in the analysis load this correct GCC version before launching <em>R</em> jobs.</p>
+<p>If you need to install <em>devtools</em> and <em>xml2</em> on the cluster, you can use the following commands from within R:</p>
+<ul>
+<li><em>&gt;</em> install.packages(“xml2”, configure.vars=‘INCLUDE_DIR=/usr/include/libxml2 LIB_DIR=/usr/lib64/’)</li>
+<li><em>&gt;</em> install.packages(“devtools”)</li>
+<li><em>&gt;</em> use usethis::use_fun() instead of devtools::use_fun()</li>
+<li><em>&gt;</em> usethis::use_package(‘rstan’) </li>
+</ul>
+<p>Note: do this before building <em>hmevr</em> as rstan is necessary to compile the Stan models implemented in <em>hmevr</em>. Also, the other dependencies of <em>hmevr</em> must be installed (see below for a complete list of dependencies).</p>
 <p>Then, to build and install the <em>hmevr</em> package (steps to repeat If the source code of the library changes):</p>
 <p>I used the following shortcuts to push and pull my analysis to the cluster:</p>
 <pre><code>cluster=&quot;ez23@dcc-something.something.duke.edu&quot; 
@@ -419,22 +421,25 @@ $ <em>bash kfold.sh</em><br />
 alias sendc=&quot;rsync -av --exclude='*.rds' /home/enrico/Projects/hmev2020si/codes/ 
 '${cluster}:~/../../group/mylab/ez23/hmev2020si/codes/'&quot;
 
-alias sendhbevr=&quot;rsync -av --exclude src/ /home/enrico/Projects/hmevr/ 
+alias sendhmevr=&quot;rsync -av --exclude src/ /home/enrico/Projects/hmevr/ 
 '${cluster}:~/../../group/mylab/ez23/hmevr/'&quot;</code></pre>
-<p>Following steps from terminal:</p>
+<p>Follow the steps from terminal:</p>
 <ol style="list-style-type: decimal">
+<li>$sendhmevr (push the <em>hmevr</em> R library to remote)</li>
+<li>$sendc (push the codes to remote)</li>
 <li>$ ssh $cluster (ssh to remote cluster)</li>
 <li>$ cdhmev (to cd to project folder)</li>
 <li>$ cd hmevr (to cd to the R library folder)</li>
 <li>$ module load GCC (necessary for R and rstan)</li>
-<li><p>$ R<br />
-&gt; library(devtools)<br />
-&gt; devtools::document() # NOT NECESSARY<br />
-&gt; devtools::build(vignettes=FALSE)<br />
-&gt; install.packages(‘../hmevr’, repos = NULL, type=“source”)<br />
-</p>
-<p>(Here, one should also be able to use install_github(“EnricoZorzetto/hmevr”))</p></li>
-<li>Everything should work now: I can run one of the following commands</li>
+<li>$ R
+<ul>
+<li><em>&gt;</em> library(devtools)</li>
+<li><em>&gt;</em> devtools::document() # NOT NECESSARY</li>
+<li><em>&gt;</em> devtools::build(vignettes=FALSE)</li>
+<li><em>&gt;</em> install.packages(‘../hmevr’, repos = NULL, type=“source”)</li>
+</ul>
+<p>(Here, one should also be able to alternatively use <em>install_github(“EnricoZorzetto/hmevr”)</em>)</p></li>
+<li>Everything should work now: we can test it by running one of the following commands</li>
 </ol>
 <ul>
 <li>$ <em>bash kfold.sh</em> to run the complete data analysis</li>
@@ -442,14 +447,14 @@ alias sendhbevr=&quot;rsync -av --exclude src/ /home/enrico/Projects/hmevr/
 <li>$ <em>bash stats.sh</em> to run the analysis of all the stations (NOT USED)</li>
 <li>$ <em>bash test.sh</em> lighter job to make sure the cluster works (JUST A TEST)</li>
 </ul>
-<ol start="8" style="list-style-type: decimal">
+<ol start="9" style="list-style-type: decimal">
 <li>Now, we can pull the results to our local machine, e.g., with the following commands</li>
 </ol>
 <ul>
 <li>$ <em>pullout</em></li>
 <li>$ <em>pulloutsim</em></li>
 </ul>
-<p>Where</p>
+<p>where</p>
 <pre><code>  alias pulloutsim='rsync -av &quot;${cluster}:~/../../group/mylab/
          ez23/hmev2020si/output/output_data/output_synth/&quot; 
             ~/Projects/hmev2020si/output/output_data/output_synth/'
@@ -457,8 +462,7 @@ alias sendhbevr=&quot;rsync -av --exclude src/ /home/enrico/Projects/hmevr/
   alias pullout='rsync -av &quot;${cluster}:~/../../group/mylab/
          ez23/hmev2020si/output/output_data/&quot; ~/Projects/hmev2020si/output/output_data/'
            </code></pre>
-<p>Note: When pushing the source code of the <em>hmevr</em> library to remote, do not push the <em>src</em> folder from local machine. If Stan code was modified, remove the remote src folder before rebuilding.</p>
-<ol start="9" style="list-style-type: decimal">
+<ol start="10" style="list-style-type: decimal">
 <li>Once in the local machine, the output data can be used to produce the figures by running the following scripts:<br />
 </li>
 </ol>
