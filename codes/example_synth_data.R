@@ -1,4 +1,12 @@
 
+
+################################################################################
+####                                                                      ######
+####   Example of application of the HBEV model to a simulated dataset    ######
+####                                                                      ######
+################################################################################
+
+
 rm(list=ls()) 
 library(nleqslv)
 library(extraDistr)
@@ -16,54 +24,42 @@ init_time = proc.time()
 # set seed for reproducible example:
 set.seed(1)
 
+#  create folder for storing output if not there already
 outplot1 = file.path('..', 'output')
 dir.create(outplot1, showWarnings = FALSE)
 outplot = file.path('..', 'output', 'outplot')
 dir.create(outplot, showWarnings = FALSE)
 
 ################################################################################
-# set parameters for analysis
-niter = 2000
-nchains = 4
-ndraws = niter*nchains/2
+###################    set parameters for analysis   ###########################
+################################################################################
+niter = 2000 # number of Iterations for each chain
+nchains = 4 # number of chains
+ndraws = niter*nchains/2 # number of posterior draws (half are burn-in period)
 Mgen = 50 # number of sample points to average over latent level variables
 trmin = 2 # minimum return times for which quantiles are computed
 Nt = 366 # number of obs / block (days / year)
+max_treedepth = 10 # for HMC sampler efficiency (use default)
 
 # generate synthetic data: length of validation and calibration datasets
-Mval = 200
-Mcal1 = 20
-Mcal2 = 50
+Mval = 200 # for validation
+Mcal1 = 20 # for fitting (I)
+Mcal2 = 50 # for fitting (II)
 
-# true parameters and model specification for generating datasets:
-wtrue = 1
-ctrue = 10
-
-mctrue = 6
-sctrue = 1
-mwtrue = 1
-swtrue = 0.1
-
-# mctrue = 7
-# sctrue = 1
-# mwtrue = 0.8
-# swtrue = 0.1
-
-pntrue = 0.3
-
-max_treedepth = 10
-
+# true parameters
+mctrue = 6 # Weibull scale expected value
+sctrue = 1 # Weibull scale expected variability
+mwtrue = 1 # Weibull shape expected value
+swtrue = 0.1 # Weibull shape expected variability
+pntrue = 0.3 # binomial rate for the number of events / block
+ndistr = 'bin' # model for the number of events (binomial)
+pdistr = 'wei_dgu' # model for the events magnitudes (Weibull)
+################################################################################
 myptrue = list(mc = mctrue, sc = sctrue, mw = mwtrue, sw = swtrue)
-# myptrue = list(C = ctrue, w = wtrue)
 myntrue = list(pn = pntrue)
-
-ndistr = 'bin'
-pdistr = 'wei_dgu'
-# pdistr = 'wei'
 ################################################################################
 
-print("Hello World!")
-# generate data
+# Generate simulated data
 cdata1 = load_synth_data(Mcal1,
             ptrue = myptrue,
             ntrue = myntrue,
@@ -76,6 +72,7 @@ cdata2 = load_synth_data(Mcal2,
             Nt = Nt,
             ndist = ndistr, dist = pdistr)
 
+# independent dataset for validation purposes
 vdata = load_synth_data(Mval,
             ptrue = myptrue,
             ntrue = myntrue,
@@ -84,17 +81,20 @@ vdata = load_synth_data(Mval,
 
 
 # fit the EV models to the two samples 
-dgu_prpar = list(gu_exp_sc0 = 0.25, gu_exp_sw0 = 0.05, # by default 0.25, 0.05
-                 inf_sc0 =10, inf_sw0 = 10, # by default is 100
-                inf_mc0 = 10, inf_mw0 = 10) # by default is 10
+dgu_prpar = list(gu_exp_sc0 = 0.25, gu_exp_sw0 = 0.05,
+                 inf_sc0 =10, inf_sw0 = 10,
+                inf_mc0 = 10, inf_mw0 = 10)
 dynfit1 = fit_ev_model(cdata1$data, model = 'wei_dgu_bin',  
                        iter = niter, chains = nchains, Mgen = Mgen,
                        max_treedepth = max_treedepth, priorpar = dgu_prpar)
+
 # stafit1 = fit_ev_model(cdata1$data, model = 'wei_sta_bin',  
 #                      iter = niter, chains = nchains, Mgen = Mgen)
+
 potfit1 = fit_ev_model(cdata1$data, model = 'pot_ppp',          
                        iter = niter, chains = nchains, Mgen = Mgen,
                        max_treedepth = max_treedepth)
+
 gevfit1 = fit_ev_model(cdata1$data, model = 'gev',          
                        iter = niter, chains = nchains, Mgen = Mgen,
                        max_treedepth = max_treedepth)
@@ -103,11 +103,14 @@ dynfit2 = fit_ev_model(cdata2$data, model = 'wei_dgu_bin',
                        iter = niter, chains = nchains, Mgen = Mgen, 
                        draw_priors = TRUE, 
                        max_treedepth = max_treedepth, priorpar = dgu_prpar)
+
 # stafit2 = fit_ev_model(cdata2$data, model = 'wei_sta_bin',  
 #                      iter = niter, chains = nchains, Mgen = Mgen)
+
 potfit2 = fit_ev_model(cdata2$data, model = 'pot_ppp',          
                        iter = niter, chains = nchains, Mgen = Mgen,
                        max_treedepth = max_treedepth)
+
 gevfit2 = fit_ev_model(cdata2$data, model = 'gev',          
                        iter = niter, chains = nchains, Mgen = Mgen, 
                        max_treedepth = max_treedepth)

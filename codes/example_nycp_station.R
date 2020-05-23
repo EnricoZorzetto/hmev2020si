@@ -1,5 +1,9 @@
-# test gev and pot models
-# using real data
+
+################################################################################
+####                                                                      ######
+#### Example of application of the HBEV model to the New York time series ######
+####                                                                      ######
+################################################################################
 
 
 rm(list=ls())
@@ -16,44 +20,47 @@ library(hmevr)
 library(latex2exp)
 library(reshape2)
 
-# rstan_options(auto_write = TRUE)
-# options(mc.cores = parallel::detectCores())
-# setwd( file.path('~','Projects','hbev','codes'))
-# source("hbev_module.R")    # main functions for data analysis
-# source("hbev_functions.R") # other functions
 
+######################## analysis parameters ###################################
+iter = 2000 # number of Iterations for each chain
+chains = 4  # number of chains
+ndraws = iter*chains/2 # number of posterior draws (half are burn-in period)
+thresh_hbev = 0 # threshold used to select wet events in the HMEV model
+adapt_delta = 0.8 # default target acceptance rate for HMC sampler
+corr_signif_lim = 0.1 # correlation threshold used to decluster time series
+trmin = 2 # minimum value of return time for which quantiles are computed
+maxmiss = 30 # maximum number of missing/flagged data points/year accepted
+min_nevents = 0 # minimum number of non-zero events/year accepted 
+Nt = 366 # number of events / block = number of days/year
+decluster = TRUE # If TRUE, perform declustering before fit
+Mgen = 50 # number of sample points for HBEV latent parameters
+################################################################################
+
+
+# create folder for saving results If does not exists already
 outplot1 = file.path('..', 'output')
 dir.create(outplot1, showWarnings = FALSE)
 outplot = file.path('..', 'output', 'outplot')
 dir.create(outplot, showWarnings = FALSE)
 
-######################## analysis parameters ###################################
-iter = 2000
-chains = 4
-ndraws = iter*chains/2
-thresh_hbev = 0
-adapt_delta = 0.8
-corr_signif_lim = 0.1
-trmin = 2
-maxmiss = 30
-min_nevents = 0
-Nt = 366
-decluster = TRUE
-Mgen = 50
-################################################################################
 
+# Read data
+# If data is not available, you can download it and process it 
+# by running the script read_ushcn_data.R
+# alternatively the dataset can be loaded from the hmevr as df = hmevr::nycp
 datadir = file.path('..','data', 'Data_GHCN_Daily', 'extracted_csv')
 filenames = list.files(datadir)
-
-filepath = file.path(datadir, 'USW00094728.csv') # nycp
+filepath = file.path(datadir, 'USW00094728.csv') # NEW YORK CENTRAL PARK
 # filepath = file.path(datadir, 'USC00311677.csv') # CHAPEL HILL
 
 df = load_obs_data(filepath, maxmiss = maxmiss, 
            min_nevents = min_nevents, dividebyten = TRUE , Nt = Nt)
+# df = hmevr::nycp # alternatively, the NYCP data is also in the hmevr package
 res = table_max(df, Nt=Nt)
 
 
-# use the first 50 years of the time series, and the rest 100 for validation
+
+# Selecting only the first 20 or 50 years of the time series
 datasets1 = split_obs_data(df, M_cal = 20, 
                            M_val = 270, 
                            Nt = Nt,
@@ -64,35 +71,46 @@ datasets1 = split_obs_data(df, M_cal = 20,
                            decluster = decluster,
                            signif_lim = corr_signif_lim)
 
+# Calibration dataset: extract all daily data and annual maxima
 data1   = datasets1$datacal$data
 maxima1 = datasets1$dataval$max
-# Mgen = dim(data1)[1] 
 
-dgu_prpar = list(gu_exp_sc0 = 0.25,  gu_exp_sw0 = 0.05, # by default 0.25, 0.05
-                 inf_sc0 =10, inf_sw0 = 10, # by default is 100
-                inf_mc0 = 10, inf_mw0 = 10) # by default is 10
+# Prior parameters for the HBEV model 
+# (if not assigned, the default values are used)
+dgu_prpar = list(gu_exp_sc0 = 0.25,  gu_exp_sw0 = 0.05,
+                 inf_sc0 =10, inf_sw0 = 10,
+                 inf_mc0 = 10, inf_mw0 = 10)
 
-# dgu_prpar = list(gu_exp_sc0 = 0.25, gu_exp_sw0 = 0.05)
+# fit the HMEV model
 dynfit1 <- hmevr::fit_ev_model(data1, model = 'wei_dgu_bin', 
                        iter = iter, chains=chains, 
                        Mgen = Mgen, adapt_delta = adapt_delta, 
                        thresh_hbev = thresh_hbev, priorpar = dgu_prpar)
+
+# # fit the equivalent static model
 # stafit1 <- hmevr::fit_ev_model(data1, model = 'wei_sta_bin', 
 #                        iter = iter, chains=chains, Mgen = Mgen, 
 #                        adapt_delta = adapt_delta, thresh_hbev = thresh_hbev)
+
+# Fit the Peak Over Threshold model
 potfit1 <- hmevr::fit_ev_model(data1, model = 'pot_ppp',     
                        iter =iter, chains=chains, 
                        Mgen = Mgen, adapt_delta = adapt_delta)
+
+# Fit the GEV model for annual maxima
 gevfit1 <- hmevr::fit_ev_model(data1, model = 'gev', 
                        iter =iter, chains=chains, 
                        Mgen = Mgen, adapt_delta = adapt_delta)
 
+# Compute quantiles for the three extreme value models
+# for return times corresponsing to the observed values in maxima1
+# and larger than the minimum value trmin selected.
 gevq1 = hmevr::comp_quant(gevfit1, maxima1, trmin = trmin)
 potq1 = hmevr::comp_quant(potfit1, maxima1, trmin = trmin)
 dynq1 = hmevr::comp_quant(dynfit1, maxima1, trmin = trmin)
 # staq1 = hmevr::comp_quant(stafit1, maxima1, trmin = trmin)
 
-# now repeat the analysis using the last 50 years
+# now repeat the analysis using the first 50 years for fitting
 datasets2 = split_obs_data(df, M_cal = 50, 
                            M_val = 270, 
                            Nt = Nt,
@@ -105,39 +123,32 @@ datasets2 = split_obs_data(df, M_cal = 50,
 
 data2   = datasets2$datacal$data
 maxima2 = datasets2$dataval$max
-# Mgen = dim(data2)[1]
 
 dynfit2 <- fit_ev_model(data2, model = 'wei_dgu_bin', 
                         iter = iter, chains=chains,
                         Mgen = Mgen, adapt_delta = adapt_delta, 
                         thresh_hbev = thresh_hbev, priorpar = dgu_prpar)
-                        # draw_priors = TRUE, ndraws = ndraws)
+
 # stafit2 <- fit_ev_model(data2, model = 'wei_sta_bin', 
 #                         iter = iter, chains=chains , Mgen = Mgen, 
 #                         adapt_delta = adapt_delta, thresh_hbev = thresh_hbev)
+
 potfit2 <- fit_ev_model(data2, model = 'pot_ppp', iter =iter, chains=chains,  
                         Mgen = Mgen, adapt_delta = adapt_delta)
+
 gevfit2 <- fit_ev_model(data2, model = 'gev', iter =iter, chains=chains,
                         Mgen = Mgen, adapt_delta = adapt_delta)
-                        # draw_priors = TRUE)
 
 gevq2 = comp_quant(gevfit2, maxima2, trmin = trmin)
 potq2 = comp_quant(potfit2, maxima2, trmin = trmin)
 dynq2 = comp_quant(dynfit2, maxima2, trmin = trmin)
+
 
 ############################# Plot MCMC Pairs ##################################
 
 mysim <- rstan::extract(dynfit2$model_fit)
 mysim <- as.array(dynfit2$model_fit)
 
-# mydf <- adply(mysim, c(1,2,3)) 
-# mydf2 <- subset(mydf, mydf$parameters %in% mynames)
-
-# x_mc = seq(from = 6.8, to = 8, length.out = 100)
-# x_mw = seq(from = 0.71, to = 0.77, length.out = 100)
-# x_sc = seq(from = 0.5, to = 1.3, length.out = 100)
-# x_sw = seq(from = 0.015, to = 0.05, length.out = 100)
-# x_pn = seq(from = 0.315, to = 0.340, length.out = 100)
 
 mynames = c("mc", "mw", "sc", "sw", "pn")
 
