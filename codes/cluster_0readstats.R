@@ -11,7 +11,7 @@ minlength_daily = 10 # keep only stations longer than this value for daily analy
 minlength_50 = 50 # keep only stations longer than this value for daily analysis
 min_nevents = 0
 maxmiss = 30 # max number of missing obs / year
-nshuffles_kfold = 10
+nshuffles_kfold = 1
 
 # download and clean data if not done already::
 source("read_ushcn_daily.R")

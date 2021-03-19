@@ -37,8 +37,8 @@ gofs = c("lpml", "lppd", "fse", "elpd_loo", "p_loo", "mwidth",
          'elpd_waic2', 'p_waic2', 'mbias', 
          'trmax_width', 'trmax_quant', 'trmin_quant')
 
-# models = c('wei_dgu_bin', 'wei_dyn_bin', 'wei_sta_bin', 'gev', 'pot_ppp')
-models = c('wei_dgu_bin', 'gev', 'pot_ppp')
+models = c('wei_dgu_bin', 'wei_dyn_bin', 'wei_sta_bin', 'gev', 'pot_ppp')
+# models = c('wei_dgu_bin', 'gev', 'pot_ppp')
 
 maxtree = list(wei_dgu_bin = 10, 
              wei_dyn_bin = 10, 

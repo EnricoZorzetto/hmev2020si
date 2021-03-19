@@ -3,5 +3,5 @@
 #SBATCH -e stats.err
 #SBATCH -c 4
 #SBATCH --mem=8G
-module load GCC/7.4.0
+module load R/4.0.3-rhel8
 R CMD BATCH --vanilla '--args kfold_cv=TRUE dataset="G"' cluster_stats.R

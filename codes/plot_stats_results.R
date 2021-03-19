@@ -9,12 +9,15 @@ library(maps)
 library(stringr)
 library(mapdata)
 library(latex2exp)
+library(showtext) # needed to add plot labels in rstudio - conda - pop_os
+showtext_auto()
 
 # choose one of the following datasets [results] to plot:
 # dset = 'kfold_37'
 # dset = 'stats_479'
 # dset = 'kfold_479'
-dset = 'kfold_479_0_dec'
+# dset = 'kfold_479_1_nodec'
+dset = 'kfold_479_5_nodec'
 # dset = 'stats_1113'
 # dset = 'stats_37'
 # dset = 'kfold_37'
@@ -31,9 +34,12 @@ minlength = 100 # min length of stations included in the analysis
 # outdata = file.path('..', 'output', 'output_data_1', sprintf('output_%s', dset))
 # outdata = file.path('..', 'output', 'output_data_backup_synth', sprintf('output_%s', dset))
 # outdata = file.path('..', 'output', 'output_data_last_priors', sprintf('output_%s', dset))
-outdata = file.path('..', 'output', 'output_data', sprintf('output_%s', dset))
+# resdir = file.path('..', 'output')
+resdir = file.path('..', 'output_5_nodec')
 
-outplot = file.path('..', 'output', 'outplot')
+
+outdata = file.path(resdir, 'output_data', sprintf('output_%s', dset))
+outplot = file.path(resdir, 'outplot')
 dir.create(outplot, showWarnings = FALSE)
 
 # to save many plots in a separate folder::
@@ -61,6 +67,17 @@ dfr$gof <- sapply(dfr$gof, function(x) gsub("_", "", x))
 
 # drop two variables we are not using:
 dfr <- subset(dfr, dfr$gof != 'ploo' & dfr$gof != 'elpdloo')
+
+# drop other models we are not using:
+
+modnames = c("gev", "pot_ppp", "wei_dgu_bin")
+# modnames = c("gev", "pot_ppp", "wei_dgu_bin")
+# modnames = c("gev", "pot_ppp", "wei_sta_bin")
+# modnames = c("gev", "wei_dyn_bin", "wei_sta_bin")
+
+dfr <- subset(dfr, dfr$gof != 'ploo' & dfr$model %in% modnames)
+
+
 
 # dfr$gof[dfr$gof == "trmin_quant"] <- "trminQuant"
 # dfr$gof[dfr$gof == "elpd_loo"] <- "elpdLoo"
@@ -93,7 +110,8 @@ dfr <- subset(dfr, dfr$gof != 'ploo' & dfr$gof != 'elpdloo')
 # # 
 dfr$test <- factor(dfr$test, levels = c("ss", "cv"),
                 labels = c("'In sample'", "'Out of sample'"))
-dfr$model <- factor(dfr$model, levels = c("gev", "pot_ppp", "wei_dgu_bin"), 
+dfr$model <- factor(dfr$model, levels = modnames, 
+                    
                 labels = c("GEV", "POT", "HMEV"))
 
 
@@ -525,6 +543,38 @@ ggplot(df_quant) +
 ################################################################################
 
 
+
+l1 <- expression('q[50]')
+usa <- map_data("usa")
+df_quant <- subset(df_ave, df_ave$model == 'HMEV' & df_ave$gof == 'mbias' 
+                   & df_ave$ssize == 50 & df_ave$test == "'In sample'")
+df_width <- subset(df_ave, df_ave$model == 'HMEV' & df_ave$gof == 'fse' 
+                   & df_ave$ssize == 50 & df_ave$test == "'In sample'")
+# df_quant <- subset(dfr, dfr$model == 'HMEV' & dfr$gof == 'trmaxquant' 
+#                    & dfr$ssize == 50 & dfr$test == "'In sample'")
+# df_width <- subset(dfr, dfr$model == 'HMEV' & dfr$gof == 'trmaxwidth' 
+#                    & dfr$ssize == 50 & dfr$test == "'In sample'")
+df_quant$Uncertainty = df_width$value /df_quant$value
+ggplot(df_quant) +
+    geom_polygon(data = usa, aes(x=long, y = lat), fill="grey", alpha=0.9) +
+    geom_point(aes(x=LONGITUDE, y=LATITUDE,
+                   color=value, size = Uncertainty), alpha = 0.9) +
+    # labs(color = "Return level 'q[50]' [mm]",)+
+    # labs(color = l1, labeller = label_parsed)+
+    # scale_color_continuous(name = l1)   +
+    scale_color_viridis(name = expression(paste(q[50], '[mm]')))   +
+    # scale_size_continuous(name = expression(paste(Delta, q[50], '/' , q[50])))   +
+    scale_size_continuous(guide=FALSE, range = c(0.01, 2))   +
+    # scale_color_continuous(name = expression(q[50]))   +
+    xlab('Longitude')+
+    ylab('Latitude')+
+    # scale_color_viridis()+
+    theme_bw()+
+    # theme(legend.position = 'bottom') +
+    theme(legend.position = c(0.18, 0.1), legend.direction = "horizontal",
+          legend.background = element_rect(fill=alpha(0.4)))+
+    ggsave(file.path(outplot, sprintf('mbias_maps_%s.png', dset)),
+          width = 6.5, height = 4)
 
 # 
 # # plot map of HBEV quantiles over the CONUS
